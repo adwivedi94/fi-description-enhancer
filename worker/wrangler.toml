@@ -1,0 +1,9 @@
+name = "fi-description-enhancer"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+# Non-secret environment variables (if needed)
+
+# Note: OPENAI_API_KEY should be added as a secret using:
+# wrangler secret put OPENAI_API_KEY

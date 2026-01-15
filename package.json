@@ -1,0 +1,33 @@
+{
+  "name": "fi-description-enhancement",
+  "version": "1.0.0",
+  "description": "AI-Powered F&I Product Description Enhancement",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test --test-timeout=30000 tests/*.test.js",
+    "test:unit": "node --test --test-timeout=30000 tests/sanitizer.test.js tests/compliance.test.js tests/confidence.test.js",
+    "test:integration": "node --test --test-timeout=30000 tests/api.test.js",
+    "test:e2e": "node --test --test-timeout=30000 tests/e2e.test.js"
+  },
+  "keywords": [
+    "f&i",
+    "dealer",
+    "ai",
+    "description",
+    "enhancement"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^6.16.0",
+    "pdf-parse": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

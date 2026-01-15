@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="AI-Powered F&I Product Description Enhancement - Generate professional, compliant descriptions for F&I products">
+  <title>F&I Description Enhancement | AI-Powered</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span class="logo-text">F&I Enhancement</span>
+        </div>
+        <span class="badge badge-ai">AI-Powered</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Mode Selector -->
+      <div class="mode-selector">
+        <button class="mode-btn active" id="mode-text" data-mode="text">
+          <svg class="mode-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Enhance Text</span>
+        </button>
+        <button class="mode-btn" id="mode-pdf" data-mode="pdf">
+          <svg class="mode-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M12 18V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M9 15L12 12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span>Upload PDF</span>
+        </button>
+      </div>
+
+      <!-- Input Section -->
+      <section class="input-section">
+        <!-- Text Input Mode -->
+        <div class="input-mode" id="text-mode">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Enter Existing Description</h2>
+              <p class="card-subtitle">Paste your current product description to enhance with AI</p>
+            </div>
+            <div class="card-body">
+              <!-- Short Description Section -->
+              <div class="form-group">
+                <label for="short-input" class="form-label">
+                  Short Description
+                  <span class="label-hint">(max 3 sentences)</span>
+                </label>
+                <textarea id="short-input" class="form-textarea" rows="3"
+                  placeholder="e.g., Covers tire damage. Good for off road."></textarea>
+                <div class="input-actions">
+                  <div class="char-count" id="short-count">0 characters</div>
+                  <button class="btn btn-sm btn-primary" id="enhance-short-btn" disabled>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Enhance with AI</span>
+                  </button>
+                </div>
+                <!-- Inline Short Description Preview -->
+                <div class="inline-preview hidden" id="short-preview-section">
+                  <div class="inline-preview-header">
+                    <span class="inline-preview-label">AI Enhanced Short Description</span>
+                    <span class="badge badge-plain">Plain Text • Max 200 chars</span>
+                  </div>
+                  <div class="inline-preview-content" id="inline-short-preview"></div>
+                  <div class="inline-preview-edit hidden" id="inline-short-edit-mode">
+                    <textarea id="inline-short-edit" class="form-textarea" rows="2"></textarea>
+                  </div>
+                  <div class="inline-preview-actions">
+                    <button class="btn btn-sm btn-outline" id="inline-short-edit-btn">Edit</button>
+                    <button class="btn btn-sm btn-outline hidden" id="inline-short-save-btn">Save</button>
+                    <button class="btn btn-sm btn-outline hidden" id="inline-short-cancel-btn">Cancel</button>
+                    <button class="btn btn-sm btn-success" id="inline-apply-short-btn">Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Long Description Section -->
+              <div class="form-group">
+                <label for="long-input" class="form-label">
+                  Long Description
+                  <span class="label-hint">(optional)</span>
+                </label>
+                <textarea id="long-input" class="form-textarea" rows="6"
+                  placeholder="Enter a more detailed description of the product coverage, benefits, and features..."></textarea>
+                <div class="input-actions">
+                  <div class="char-count" id="long-count">0 characters</div>
+                  <button class="btn btn-sm btn-primary" id="enhance-long-btn" disabled>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Enhance with AI</span>
+                  </button>
+                </div>
+                <!-- Inline Long Description Preview -->
+                <div class="inline-preview hidden" id="long-preview-section">
+                  <div class="inline-preview-header">
+                    <span class="inline-preview-label">AI Enhanced Long Description</span>
+                    <span class="badge badge-rich">Rich Text • HTML Formatted</span>
+                  </div>
+                  <div class="inline-preview-content preview-html" id="inline-long-preview"></div>
+                  <div class="inline-preview-edit hidden" id="inline-long-edit-mode">
+                    <textarea id="inline-long-edit" class="form-textarea form-textarea-html" rows="8"></textarea>
+                    <p class="edit-hint">Allowed: &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;</p>
+                  </div>
+                  <div class="inline-preview-actions">
+                    <button class="btn btn-sm btn-outline" id="inline-long-edit-btn">Edit HTML</button>
+                    <button class="btn btn-sm btn-outline hidden" id="inline-long-save-btn">Save</button>
+                    <button class="btn btn-sm btn-outline hidden" id="inline-long-cancel-btn">Cancel</button>
+                    <button class="btn btn-sm btn-success" id="inline-apply-long-btn">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PDF Upload Mode -->
+        <div class="input-mode hidden" id="pdf-mode">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Upload Product PDF</h2>
+              <p class="card-subtitle">Upload a product brochure or specification sheet to generate descriptions</p>
+            </div>
+            <div class="card-body">
+              <div class="upload-zone" id="upload-zone">
+                <input type="file" id="pdf-input" accept=".pdf" class="file-input">
+                <div class="upload-content">
+                  <svg class="upload-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                  <p class="upload-text">Drag and drop your PDF here, or <span class="upload-link">browse</span></p>
+                  <p class="upload-hint">Maximum file size: 10MB</p>
+                </div>
+              </div>
+              <div class="file-info hidden" id="file-info">
+                <svg class="file-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+                <div class="file-details">
+                  <span class="file-name" id="file-name"></span>
+                  <span class="file-size" id="file-size"></span>
+                </div>
+                <button class="btn-icon-only" id="remove-file" title="Remove file">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" id="extract-btn" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Generate from PDF</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State Prompt -->
+        <div class="empty-prompt hidden" id="empty-prompt">
+          <div class="alert alert-info">
+            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <p>Please enter a description to enhance or upload a PDF to generate content. AI cannot create descriptions
+              without source material.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loading State -->
+      <section class="loading-section hidden" id="loading-section">
+        <div class="loading-card">
+          <div class="loading-spinner"></div>
+          <p class="loading-text" id="loading-text">Enhancing your description...</p>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="results-section hidden" id="results-section">
+        <!-- Warnings Banner -->
+        <div class="warnings-banner hidden" id="warnings-banner">
+          <div class="alert alert-warning" id="confidence-warning">
+            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10.29 3.86L1.82 18C1.64 18.3 1.55 18.64 1.55 19C1.56 19.36 1.66 19.71 1.85 20.01C2.04 20.31 2.31 20.56 2.63 20.72C2.95 20.88 3.31 20.95 3.67 20.92H20.33C20.69 20.95 21.05 20.88 21.37 20.72C21.69 20.56 21.96 20.31 22.15 20.01C22.34 19.71 22.44 19.36 22.45 19C22.45 18.64 22.36 18.3 22.18 18L13.71 3.86C13.52 3.56 13.25 3.31 12.93 3.15C12.61 2.98 12.25 2.9 11.89 2.9C11.53 2.9 11.17 2.98 10.85 3.15C10.53 3.31 10.26 3.56 10.07 3.86H10.29Z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12 9V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <div class="warning-content">
+              <strong>Low Confidence</strong>
+              <p id="confidence-message">AI confidence is low. Please verify accuracy before publishing.</p>
+            </div>
+          </div>
+          <div class="alert alert-compliance hidden" id="compliance-warning">
+            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="currentColor" stroke-width="2" />
+              <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <div class="warning-content">
+              <strong>Compliance Review Needed</strong>
+              <ul class="warning-list" id="compliance-list"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview Cards - Using Inline Preview Style -->
+        <div class="pdf-results-container">
+          <!-- Short Description Preview -->
+          <div class="inline-preview" id="pdf-short-preview-section">
+            <div class="inline-preview-header">
+              <span class="inline-preview-label">AI Enhanced Short Description</span>
+              <span class="badge badge-plain">Plain Text • Max 200 chars</span>
+            </div>
+            <div class="inline-preview-content" id="short-preview"></div>
+            <div class="inline-preview-edit hidden" id="short-edit-mode">
+              <textarea id="short-edit" class="form-textarea" rows="3"></textarea>
+            </div>
+            <div class="inline-preview-actions">
+              <button class="btn btn-sm btn-outline" id="short-edit-btn">Edit</button>
+              <button class="btn btn-sm btn-outline hidden" id="short-save-btn">Save</button>
+              <button class="btn btn-sm btn-outline hidden" id="short-cancel-btn">Cancel</button>
+              <button class="btn btn-sm btn-success" id="pdf-apply-short-btn">Apply</button>
+            </div>
+          </div>
+
+          <!-- Long Description Preview -->
+          <div class="inline-preview" id="pdf-long-preview-section">
+            <div class="inline-preview-header">
+              <span class="inline-preview-label">AI Enhanced Long Description</span>
+              <span class="badge badge-rich">Rich Text • HTML Formatted</span>
+            </div>
+            <div class="inline-preview-content preview-html" id="long-preview"></div>
+            <div class="inline-preview-edit hidden" id="long-edit-mode">
+              <textarea id="long-edit" class="form-textarea form-textarea-html" rows="10"></textarea>
+              <p class="edit-hint">Allowed: &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;</p>
+            </div>
+            <div class="inline-preview-actions">
+              <button class="btn btn-sm btn-outline" id="long-edit-btn">Edit HTML</button>
+              <button class="btn btn-sm btn-outline hidden" id="long-save-btn">Save</button>
+              <button class="btn btn-sm btn-outline hidden" id="long-cancel-btn">Cancel</button>
+              <button class="btn btn-sm btn-success" id="pdf-apply-long-btn">Apply</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+          <button class="btn btn-outline" id="reset-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                d="M3.51 15C4.15839 16.8404 5.38734 18.4202 7.01166 19.5014C8.63598 20.5826 10.5677 21.1066 12.5157 20.9945C14.4637 20.8824 16.3226 20.1402 17.8121 18.8798C19.3017 17.6193 20.3413 15.9089 20.7742 14.0064C21.2072 12.1039 21.0101 10.1134 20.2126 8.33122C19.4152 6.54901 18.0605 5.06288 16.3528 4.08836C14.6451 3.11383 12.6769 2.70267 10.7447 2.91802C8.81245 3.13337 7.02091 3.96372 5.64 5.28L1 10"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Start Over</span>
+          </button>
+          <button class="btn btn-success" id="apply-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <span>Apply Descriptions</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Success Toast -->
+      <div class="toast hidden" id="success-toast">
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        <span class="toast-message" id="toast-message">Descriptions applied successfully!</span>
+      </div>
+
+      <!-- Error Toast -->
+      <div class="toast toast-error hidden" id="error-toast">
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+          <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span class="toast-message" id="error-message">An error occurred</span>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>AI-generated content should be reviewed before publishing. <a href="#" class="footer-link">Learn more about
+          compliance guidelines</a></p>
+    </footer>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
