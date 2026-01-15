@@ -10,6 +10,29 @@ AI-Powered F&I Product Description Enhancement for dealer portals. This feature 
 - **HTML Sanitization**: XSS prevention with whitelist-based sanitization
 - **Confidence Scoring**: Flag low-confidence PDF extractions for review
 
+## 🚀 Deployment (Demo Link)
+
+The best way to share this demo is by deploying the full application to **Render** or **Railway**.
+
+### Deploy to Render
+
+1.  **Connect GitHub**: Log in to [Render.com](https://render.com) and connect your GitHub account.
+2.  **Create Web Service**: Click **New +** > **Web Service** and select this repository.
+3.  **Basic Settings**:
+    - **Runtime**: `Node`
+    - **Build Command**: `npm install`
+    - **Start Command**: `npm start`
+4.  **Environment Variables**:
+    - Click **Advanced** > **Add Environment Variable**.
+    - Add `OPENAI_API_KEY`: `(Your OpenAI API Key)`.
+5.  **Deploy**: Click **Deploy Web Service**.
+
+Render will provide a public URL (e.g., `https://fi-description-enhancer.onrender.com`) that you can share. All features (including PDF Upload) will work on this link.
+
+---
+
+## 🔒 Security & Cloudflare Proxy
+
 ## Quick Start
 
 ```bash
