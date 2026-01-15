@@ -9,10 +9,11 @@ require('dotenv').config();
 const pdfParse = require('pdf-parse');
 const OpenAI = require('openai');
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+// Initialize OpenAI client lazily to avoid errors on environments (like Render) 
+// that use the Cloudflare Worker proxy instead of a local API key.
+const openai = process.env.OPENAI_API_KEY
+    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    : null;
 
 /**
  * Extract text and generate descriptions from a PDF

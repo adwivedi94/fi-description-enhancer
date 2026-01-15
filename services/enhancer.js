@@ -11,10 +11,11 @@
 require('dotenv').config();
 const OpenAI = require('openai');
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+// Initialize OpenAI client lazily to avoid errors on environments (like Render) 
+// that use the Cloudflare Worker proxy instead of a local API key.
+const openai = process.env.OPENAI_API_KEY
+    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    : null;
 
 // System prompt for F&I description enhancement
 const SYSTEM_PROMPT = `You are an expert F&I (Finance & Insurance) product description writer for automotive dealerships.
@@ -62,6 +63,8 @@ For SHORT descriptions:
 For LONG descriptions:
 - Use HTML formatting: <p>, <strong>, <em>, <ul>, <li>, <br>
 - Include clear section headers (Overview, Key Benefits, Coverage Highlights)
+- CRITICAL: Always place section headers (like <strong>Key Benefits</strong>) in their own <p> tags OUTSIDE and ABOVE the corresponding <ul> lists.
+- NEVER put <strong> tags directly inside <ul> tags.
 - Use bullet points for features/benefits
 - Be comprehensive but scannable`;
 

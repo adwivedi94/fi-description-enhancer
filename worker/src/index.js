@@ -84,7 +84,8 @@ async function handleGeneration(data, env) {
                 RULES:
                 - NEVER use: "guarantee", "never", "always", "mandatory", "best", "ultimate"
                 - SHORT description: Max 200 characters, plain text.
-                - LONG description: HTML formatted (<p>, <strong>, <ul>, <li>).`
+                - LONG description: HTML formatted (<p>, <strong>, <ul>, <li>).
+                - CRITICAL: Place section headers (like <strong>Key Benefits</strong>) in <p> tags ABOVE <ul> lists. NEVER put headers inside <ul> tags. `
             },
             {
                 role: "user",
@@ -156,7 +157,8 @@ PERSUASION PRINCIPLES:
 RULES:
 - NEVER use: "guarantee", "never", "always", "mandatory", "best", "ultimate"
 - Max 3 sentences for SHORT descriptions.
-- Use HTML for LONG descriptions: <p>, <strong>, <em>, <ul>, <li>.`;
+- Use HTML for LONG descriptions: <p>, <strong>, <em>, <ul>, <li>.
+- CRITICAL: Place section headers (like <strong>Key Benefits</strong>) in <p> tags ABOVE <ul> lists. NEVER put headers inside <ul> tags.`;
 
     // Determine what to enhance
     const requests = [];
