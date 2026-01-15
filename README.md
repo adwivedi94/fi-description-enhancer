@@ -24,14 +24,20 @@ The best way to share this demo is by deploying the full application to **Render
     - **Start Command**: `npm start`
 4.  **Environment Variables**:
     - Click **Advanced** > **Add Environment Variable**.
-    - Add `OPENAI_API_KEY`: `(Your OpenAI API Key)`.
+    - Add `CLOUDFLARE_WORKER_URL`: `https://your-worker-name.your-subdomain.workers.dev`.
 5.  **Deploy**: Click **Deploy Web Service**.
 
-Render will provide a public URL (e.g., `https://fi-description-enhancer.onrender.com`) that you can share. All features (including PDF Upload) will work on this link.
+Render will provide a public URL (e.g., `https://fi-description-enhancer.onrender.com`) that you can share. All features (including PDF Upload) will work securely by proxying requests through your Cloudflare Worker.
 
 ---
 
 ## 🔒 Security & Cloudflare Proxy
+
+This project uses a **Cloudflare Worker** as a secure proxy for all AI calls. 
+
+1.  **Centralized Key**: The OpenAI API key is stored ONLY as a secret in Cloudflare.
+2.  **Zero-Secret Server**: The main Node.js server (Render) does not need your API key; it only needs your Worker's URL.
+3.  **Encrypted Logic**: Your system prompts and persuasion principles are baked into the worker, keeping them private.
 
 ## Quick Start
 

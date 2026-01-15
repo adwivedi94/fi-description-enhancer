@@ -28,7 +28,7 @@ export default {
 
         const url = new URL(request.url);
 
-        // We only handle /enhance endpoint
+        // We handle /enhance and /generate endpoints
         if (url.pathname === "/enhance") {
             try {
                 const body = await request.json();
@@ -36,10 +36,19 @@ export default {
             } catch (err) {
                 return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
                     status: 400,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*"
-                    }
+                    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+                });
+            }
+        }
+
+        if (url.pathname === "/generate") {
+            try {
+                const body = await request.json();
+                return await handleGeneration(body, env);
+            } catch (err) {
+                return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
+                    status: 400,
+                    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
                 });
             }
         }
@@ -50,6 +59,72 @@ export default {
         });
     },
 };
+
+/**
+ * Handle generation request (for PDF text)
+ */
+async function handleGeneration(data, env) {
+    const { rawText, productType } = data;
+
+    if (!env.OPENAI_API_KEY) {
+        return new Response(JSON.stringify({ error: "OPENAI_API_KEY not configured" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+    }
+
+    const type = productType || 'F&I protection product';
+
+    try {
+        const messages = [
+            {
+                role: "system",
+                content: `You are an expert F&I (Finance & Insurance) product description writer. You extract key information from product documents and create professional, compelling descriptions.
+                
+                RULES:
+                - NEVER use: "guarantee", "never", "always", "mandatory", "best", "ultimate"
+                - SHORT description: Max 200 characters, plain text.
+                - LONG description: HTML formatted (<p>, <strong>, <ul>, <li>).`
+            },
+            {
+                role: "user",
+                content: `Based on this ${type} document, create TWO descriptions (SHORT and LONG).
+                
+                DOCUMENT TEXT:
+                ${rawText}
+                
+                Return JSON format: { "shortDescription": "...", "longDescription": "..." }`
+            }
+        ];
+
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: messages,
+                response_format: { type: "json_object" },
+                temperature: 0.7
+            })
+        });
+
+        const aiData = await response.json();
+        const result = JSON.parse(aiData.choices[0].message.content);
+
+        return new Response(JSON.stringify(result), {
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+
+    } catch (error) {
+        return new Response(JSON.stringify({ error: "AI generation failed" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+    }
+}
 
 /**
  * Handle enhancement request

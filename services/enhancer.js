@@ -72,12 +72,41 @@ For LONG descriptions:
  * @param {string} longDescription - Existing long description
  * @returns {Promise<{shortDescription: string, longDescription: string}>}
  */
+/**
+ * Enhance descriptions using Proxy or Local OpenAI
+ */
 async function enhanceDescriptions(shortDescription, longDescription) {
     const hasShort = shortDescription && shortDescription.trim();
     const hasLong = longDescription && longDescription.trim();
+    const workerUrl = process.env.CLOUDFLARE_WORKER_URL;
 
-    // Only enhance what's provided - don't auto-generate the other field
-    // This keeps response times fast (single API call)
+    // Preference: Use Cloudflare Worker if configured
+    if (workerUrl) {
+        try {
+            const response = await fetch(`${workerUrl.replace(/\/$/, '')}/enhance`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    shortDescription: shortDescription || '',
+                    longDescription: longDescription || ''
+                })
+            });
+
+            if (!response.ok) throw new Error(`Worker status: ${response.status}`);
+            const result = await response.json();
+
+            // If we only wanted one enhanced but got both from worker, that's fine
+            return {
+                shortDescription: result.shortDescription || '',
+                longDescription: result.longDescription || ''
+            };
+        } catch (error) {
+            console.error('Worker enhancement failed, trying local fallback if key exists:', error.message);
+            if (!process.env.OPENAI_API_KEY) throw error;
+        }
+    }
+
+    // Local OpenAI Fallback
     let enhancedShort = '';
     let enhancedLong = '';
 
@@ -90,11 +119,11 @@ async function enhanceDescriptions(shortDescription, longDescription) {
     } else if (hasShort) {
         // Only short provided - enhance it AND generate a long one from it
         enhancedShort = await enhanceShortDescription(shortDescription);
-        enhancedLong = await enhanceLongDescription(shortDescription); // Use short as seed
+        enhancedLong = await enhanceLongDescription(shortDescription);
     } else if (hasLong) {
         // Only long provided - enhance it AND generate a short one from it
         enhancedLong = await enhanceLongDescription(longDescription);
-        enhancedShort = await enhanceShortDescription(longDescription); // Use long as seed
+        enhancedShort = await enhanceShortDescription(longDescription);
     }
 
     return {

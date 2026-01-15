@@ -59,7 +59,7 @@ async function extractFromPDF(pdfBuffer) {
 }
 
 /**
- * Generate descriptions using OpenAI from PDF text
+ * Generate descriptions using Cloudflare Worker Proxy from PDF text
  */
 async function generateDescriptionsWithAI(rawText, analysis) {
     // Truncate text if too long (to fit in context)
@@ -69,73 +69,39 @@ async function generateDescriptionsWithAI(rawText, analysis) {
         : rawText;
 
     const productType = analysis.productType || 'F&I protection product';
+    const workerUrl = process.env.CLOUDFLARE_WORKER_URL;
+
+    // Fast fallback if worker URL is not configured
+    if (!workerUrl) {
+        console.warn('CLOUDFLARE_WORKER_URL not configured, using basic fallback');
+        return {
+            shortDescription: generateFallbackShort(analysis),
+            longDescription: generateFallbackLong(analysis)
+        };
+    }
 
     try {
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [
-                {
-                    role: 'system',
-                    content: `You are an expert F&I (Finance & Insurance) product description writer. You extract key information from product documents and create professional, compelling descriptions.
-
-IMPORTANT RULES:
-- NEVER use prohibited words: "guarantee", "guaranteed", "never", "always", "mandatory", "required by law", "best", "ultimate", "act now", "limited time"
-- NEVER use fear-based language or high-pressure tactics
-- Be professional, clear, and factual
-- Focus on value proposition and benefits`
-                },
-                {
-                    role: 'user',
-                    content: `Based on this ${productType} document, create TWO descriptions:
-
-1. SHORT DESCRIPTION: 
-   - MAXIMUM 200 characters (this is critical - count them!)
-   - 1-2 sentences only
-   - Plain text only (no HTML)
-   - Core value proposition
-
-2. LONG DESCRIPTION:
-   - Use proper HTML tags: <p>, <strong>, <ul>, <li>
-   - Include an overview paragraph
-   - List key coverage items as bullet points
-   - List key benefits as bullet points
-   - Be comprehensive but concise
-
-DOCUMENT TEXT:
-${truncatedText}
-
-Respond in this exact format:
-SHORT: [your short description here, max 200 characters]
-LONG: [your HTML long description here]`
-                }
-            ],
-            max_tokens: 1000,
-            temperature: 0.7
+        const response = await fetch(`${workerUrl.replace(/\/$/, '')}/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                rawText: truncatedText,
+                productType: productType
+            })
         });
 
-        const content = response.choices[0].message.content;
-
-        // Parse the response
-        const shortMatch = content.match(/SHORT:\s*(.+?)(?=\nLONG:|$)/s);
-        const longMatch = content.match(/LONG:\s*(.+)/s);
-
-        let shortDescription = shortMatch ? shortMatch[1].trim() : '';
-        let longDescription = longMatch ? longMatch[1].trim() : '';
-
-        // Enforce 200 character limit on short description
-        if (shortDescription.length > 200) {
-            shortDescription = shortDescription.substring(0, 197) + '...';
+        if (!response.ok) {
+            throw new Error(`Worker status: ${response.status}`);
         }
 
-        // Clean up any markdown code blocks from long description
-        longDescription = longDescription
-            .replace(/```html?\n?/g, '')
-            .replace(/```\n?/g, '')
-            .trim();
+        const result = await response.json();
 
-        return { shortDescription, longDescription };
+        return {
+            shortDescription: result.shortDescription || '',
+            longDescription: result.longDescription || ''
+        };
     } catch (error) {
-        console.error('OpenAI API error (PDF extraction):', error.message);
+        console.error('Cloudflare Worker error (PDF generation):', error.message);
         // Fallback to basic extraction
         return {
             shortDescription: generateFallbackShort(analysis),
